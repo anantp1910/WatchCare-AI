@@ -1,5 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <!-- Light Theme Backgrounds (Healthcare White/Gray) -->
+    <color name="bg_primary">#FFFFFF</color>          <!-- Pure white -->
+    <color name="bg_secondary">#F5F7FA</color>        <!-- Soft gray -->
+    <color name="bg_card">#FAFBFC</color>             <!-- Card background -->
+    <color name="bg_input">#F0F4F8</color>            <!-- Input fields -->
+    
+    <!-- Medical Blue (Primary) -->
+    <color name="blue_primary">#0066CC</color>        <!-- Main blue -->
+    <color name="blue_dark">#004C99</color>           <!-- Darker blue -->
+    <color name="blue_light">#3385D6</color>          <!-- Lighter blue -->
+    <color name="blue_soft">#E3F2FD</color>           <!-- Very light blue bg -->
+    
+    <!-- Turquoise (Accent - Healthcare calm) -->
+    <color name="turquoise_primary">#00BCD4</color>   <!-- Main turquoise -->
+    <color name="turquoise_dark">#0097A7</color>      <!-- Darker turquoise -->
+    <color name="turquoise_light">#4DD0E1</color>     <!-- Lighter turquoise -->
+    <color name="turquoise_soft">#E0F7FA</color>      <!-- Very light turquoise bg -->
+    
+    <!-- Alert Red (Semantic) -->
+    <color name="alert_red">#E53935</color>           <!-- Alert red -->
+    <color name="alert_red_dark">#C62828</color>      <!-- Darker red -->
+    <color name="alert_red_light">#EF5350</color>     <!-- Lighter red -->
+    <color name="alert_red_soft">#FFEBEE</color>      <!-- Very light red bg -->
+    
+    <!-- Status Colors -->
+    <color name="success_green">#4CAF50</color>       <!-- Success/active -->
+    <color name="success_soft">#E8F5E9</color>        <!-- Light green bg -->
+    <color name="warning_yellow">#FFC107</color>      <!-- Warning -->
+    <color name="warning_soft">#FFF8E1</color>        <!-- Light yellow bg -->
+    
+    <!-- Text Colors (Dark on Light) -->
+    <color name="text_primary">#1A1A1A</color>        <!-- Main text -->
+    <color name="text_secondary">#757575</color>      <!-- Secondary text -->
+    <color name="text_tertiary">#9E9E9E</color>       <!-- Disabled text -->
+    <color name="text_hint">#BDBDBD</color>           <!-- Hints -->
+    
+    <!-- Borders & Dividers -->
+    <color name="border_light">#E0E0E0</color>        <!-- Light borders -->
+    <color name="border_medium">#BDBDBD</color>       <!-- Medium borders -->
+    <color name="divider">#EEEEEE</color>             <!-- Dividers -->
+    
+    <!-- Shadows -->
+    <color name="shadow_light">#1A000000</color>      <!-- 10% black -->
+    <color name="shadow_medium">#33000000</color>     <!-- 20% black -->
+    
+    <!-- Old colors (keep for compatibility but not used) -->
+    <color name="slate_950">#0f172a</color>
+    <color name="slate_900">#1e293b</color>
+    <color name="slate_800">#1e293b</color>
+    <color name="slate_700">#334155</color>
+    <color name="slate_600">#475569</color>
+    <color name="slate_500">#64748b</color>
+    <color name="slate_400">#94a3b8</color>
+    <color name="blue_600">#2563eb</color>
+    <color name="blue_500">#3b82f6</color>
+    <color name="blue_400">#60a5fa</color>
+    <color name="blue_300">#93c5fd</color>
+    <color name="blue_200">#bfdbfe</color>
+    <color name="cyan_600">#0891b2</color>
+    <color name="cyan_500">#06b6d4</color>
+    <color name="cyan_400">#22d3ee</color>
+    <color name="cyan_300">#67e8f9</color>
+    <color name="purple_600">#9333ea</color>
+    <color name="purple_500">#a855f7</color>
+    <color name="purple_400">#c084fc</color>
+    <color name="teal_600">#0d9488</color>
+    <color name="teal_500">#14b8a6</color>
+    <color name="green_500">#22c55e</color>
+    <color name="green_400">#4ade80</color>
+    <color name="yellow_500">#eab308</color>
+    <color name="yellow_400">#facc15</color>
+    <color name="red_500">#ef4444</color>
+    <color name="red_400">#f87171</color>
+    <color name="glass_background">#0D0f172a</color>
+    <color name="glass_border">#1AFFFFFF</color>
+    <color name="glass_panel">#990f172a</color>
+    <color name="text_primary_old">#FFFFFF</color>
+    <color name="text_secondary_old">#94a3b8</color>
+    <color name="text_tertiary_old">#64748b</color>
+    <color name="gradient_blue_start">#2563eb</color>
+    <color name="gradient_blue_end">#0891b2</color>
 </resources>
