@@ -36,20 +36,22 @@
             android:layout_height="160dp"
             android:layout_marginBottom="32dp">
 
-            <!-- White card behind logo -->
+            <!-- Blue background card (NOT white!) -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_card_light"
+                android:backgroundTint="@color/blue_soft"
                 android:elevation="8dp" />
 
-            <!-- Logo Image -->
+            <!-- Logo Image - Now with blue tint so it's visible! -->
             <ImageView
                 android:id="@+id/imgLogo"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_gravity="center"
-                android:src="@drawable/logo"
+                android:src="@drawable/ic_check"
+                android:tint="@color/blue_primary"
                 android:contentDescription="WatchCare AI Logo" />
         </FrameLayout>
 
