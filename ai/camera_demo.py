@@ -1,227 +1,287 @@
-import cv2
-import numpy as np
-from datetime import datetime
-import time
-import argparse
+# camera_demo.py
+# Plays a video (or webcam), computes UP/DOWN + time + torso angle,
+# shows DOWN a bit earlier (DOWN_STATUS_SEC),
+# sends ALERT a bit later (DOWN_ALERT_SEC),
+# pushes a Firestore alert after confirmed down duration,
+# and shows a TOP banner "ALERT SENT".
 
+import os
+import time
+import math
+import cv2
+
+# --- Firebase Admin ---
 from firebase_admin import credentials, firestore, initialize_app
 
-# ================== ARGPARSE ==================
-parser = argparse.ArgumentParser()
-parser.add_argument("--video", type=str, default="demo.mp4", help="Path to demo video")
-parser.add_argument("--webcam", action="store_true", help="Use live webcam instead of video")
-parser.add_argument("--cam", type=int, default=0, help="Camera index (0,1,2...)")
-args = parser.parse_args()
+# --- MediaPipe ---
+import mediapipe as mp
 
-VIDEO_PATH = args.video
-USE_WEBCAM = args.webcam
 
-# -------- MediaPipe import --------
-try:
-    import mediapipe as mp
-except Exception as e:
-    print(f"MediaPipe import failed: {e}")
-    raise
+# =========================
+# CONFIG
+# =========================
 
-# ================== CONFIG ==================
 KEY_PATH = "serviceAccountKey.json"
 
-# Fall detection tuning
-FALL_ANGLE_THRESHOLD = 45      # degrees from vertical (0=standing, 90=horizontal)
-STAY_DOWN_TIME = 4.0           # seconds must stay down before alert
-MOVEMENT_THRESHOLD = 0.05      # avg normalized movement threshold
-MIN_VISIBILITY = 0.5           # ignore landmarks if visibility below this
+SOURCE_MODE = "VIDEO"  # "VIDEO" or "WEBCAM"
 
-LOCATION_NAME = "Waiting Room Cam 3"
-SEVERITY_SCORE = 0.93
+# If VIDEO (playlist):
+VIDEO_FILES = ["WhatsApp Video 2026-01-18 at 5.57.36 AM.mp4"
+]
 
-if USE_WEBCAM:
-    print(f"Source: WEBCAM (index {args.cam})")
-else:
-    print(f"Source: VIDEO ({VIDEO_PATH})")
+LOOP_VIDEO = False       # False = stop when all videos finish; True = loop the last/only video
 
-# ================== FIREBASE SETUP ==================
+# If WEBCAM:
+WEBCAM_INDEX = 0
+
+ALERTS_COLLECTION = "alerts"
+ALERT_COOLDOWN_SEC = 10
+
+# Angle threshold (0 degrees = perfectly upright; higher = leaning/lying)
+DOWN_ANGLE_THRESHOLD = 45.0
+
+# Show DOWN earlier, send alert later
+DOWN_STATUS_SEC = 0.5   # show "DOWN" after being down for 0.5s
+DOWN_ALERT_SEC  = 2.0   # send alert after being down for 2.0s
+
+# Top banner duration (seconds) after alert push
+ALERT_BANNER_SECONDS = 5.0
+
+
+# =========================
+# INIT FIREBASE
+# =========================
+
+if not os.path.exists(KEY_PATH):
+    raise FileNotFoundError(f"Missing {KEY_PATH}. Put it in the same folder as camera_demo.py")
+
 cred = credentials.Certificate(KEY_PATH)
 initialize_app(cred)
 db = firestore.client()
 
-def push_alert(trigger_time_s: float):
-    doc = {
-        "location": LOCATION_NAME,
-        "severity": SEVERITY_SCORE,
-        "status": "active",
-        "created_at": firestore.SERVER_TIMESTAMP,
-        "claimed_by": None,
-        "claimed_at": None,
-        "resolved_by": None,
-        "resolved_at": None,
-        "trigger_time_s": round(trigger_time_s, 2),
-        "triggered_local_time": datetime.now().isoformat(timespec="seconds")
-    }
-    db.collection("alerts").add(doc)
-    print(f"ALERT pushed to Firestore at t={trigger_time_s:.2f}s")
 
-# ================== MEDIAPIPE SETUP ==================
+def push_alert(location="Ward A", severity=0.95):
+    db.collection(ALERTS_COLLECTION).add({
+        "location": location,
+        "severity": float(severity),
+        "status": "active",
+        "created_at": firestore.SERVER_TIMESTAMP
+    })
+
+
+# =========================
+# INIT MEDIAPIPE
+# =========================
+
 mp_pose = mp.solutions.pose
-mp_draw = mp.solutions.drawing_utils
+mp_drawing = mp.solutions.drawing_utils
 
 pose = mp_pose.Pose(
     static_image_mode=False,
     model_complexity=1,
+    enable_segmentation=False,
     min_detection_confidence=0.5,
     min_tracking_confidence=0.5
 )
 
-# ================== HELPER FUNCTIONS ==================
-def get_landmark_xy(landmarks, idx):
-    lm = landmarks[idx]
-    return np.array([lm.x, lm.y], dtype=np.float32), lm.visibility
 
-def body_angle_from_vertical(landmarks):
-    """
-    Compute angle (degrees) between body axis (shoulder-mid -> hip-mid)
-    and vertical direction. 0 = upright, 90 = horizontal.
-    """
-    ls, v1 = get_landmark_xy(landmarks, mp_pose.PoseLandmark.LEFT_SHOULDER.value)
-    rs, v2 = get_landmark_xy(landmarks, mp_pose.PoseLandmark.RIGHT_SHOULDER.value)
-    lh, v3 = get_landmark_xy(landmarks, mp_pose.PoseLandmark.LEFT_HIP.value)
-    rh, v4 = get_landmark_xy(landmarks, mp_pose.PoseLandmark.RIGHT_HIP.value)
+# =========================
+# VIDEO SOURCE HANDLING
+# =========================
 
-    if min(v1, v2, v3, v4) < MIN_VISIBILITY:
-        return None
+def open_capture():
+    if SOURCE_MODE.upper() == "WEBCAM":
+        print(f"Source: WEBCAM (index={WEBCAM_INDEX})")
+        cap = cv2.VideoCapture(WEBCAM_INDEX)
+        return cap, 0
 
-    shoulder_mid = (ls + rs) / 2.0
-    hip_mid = (lh + rh) / 2.0
+    video_path = VIDEO_FILES[0]
+    print(f"Source: VIDEO ({video_path})")
+    cap = cv2.VideoCapture(video_path)
+    return cap, 0
 
-    vec = hip_mid - shoulder_mid  # body axis downward
-    vertical = np.array([0.0, 1.0], dtype=np.float32)
 
-    vec_norm = np.linalg.norm(vec) + 1e-6
-    cosang = np.clip(np.dot(vec, vertical) / vec_norm, -1.0, 1.0)
-    angle = np.degrees(np.arccos(cosang))
-    return float(angle)
+def switch_to_next_video(current_index):
+    next_index = (current_index + 1) % len(VIDEO_FILES)
+    video_path = VIDEO_FILES[next_index]
+    print(f"Switching to next video: {video_path}")
+    cap = cv2.VideoCapture(video_path)
+    return cap, next_index
 
-def avg_movement(prev_pts, curr_pts):
-    if prev_pts is None or curr_pts is None:
-        return None
-    diffs = np.linalg.norm(curr_pts - prev_pts, axis=1)
-    return float(np.mean(diffs))
 
-def extract_keypoints(landmarks):
-    ids = [
-        mp_pose.PoseLandmark.NOSE.value,
-        mp_pose.PoseLandmark.LEFT_SHOULDER.value,
-        mp_pose.PoseLandmark.RIGHT_SHOULDER.value,
-        mp_pose.PoseLandmark.LEFT_HIP.value,
-        mp_pose.PoseLandmark.RIGHT_HIP.value,
-    ]
-    pts = []
-    for i in ids:
-        p, vis = get_landmark_xy(landmarks, i)
-        if vis < MIN_VISIBILITY:
-            return None
-        pts.append(p)
-    return np.stack(pts, axis=0)
+# =========================
+# MAIN
+# =========================
 
-# ================== MAIN LOOP ==================
-cap = cv2.VideoCapture(args.cam if USE_WEBCAM else VIDEO_PATH)
-if not cap.isOpened():
-    if USE_WEBCAM:
-        print(f"ERROR: Could not open webcam index {args.cam}")
-    else:
-        print(f"ERROR: Could not open video: {VIDEO_PATH}")
-    raise SystemExit(1)
+def main():
+    cap, video_index = open_capture()
 
-triggered = False
-down_start_time = None
-prev_pts = None
-start_wall = time.time()
+    if not cap.isOpened():
+        if SOURCE_MODE.upper() == "VIDEO":
+            raise RuntimeError(f"ERROR: Could not open video: {VIDEO_FILES[0]}")
+        raise RuntimeError("ERROR: Could not open webcam. Try index 0/1/2 and close Zoom/Teams.")
 
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        break
+    last_alert_time = 0.0
 
-    # time in seconds:
-    # - video: use video timestamp
-    # - webcam: use wall clock time since start
-    if USE_WEBCAM:
-        t = time.time() - start_wall
-    else:
-        t = cap.get(cv2.CAP_PROP_POS_MSEC) / 1000.0
+    # Used to track how long we've been continuously "down"
+    down_start_time = None
 
-    rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    res = pose.process(rgb)
+    # Prevent sending multiple alerts for one down event
+    alert_sent_for_current_down = False
 
-    status_text = "No person"
-    angle_text = ""
-    move_text = ""
+    # top banner timer (show "ALERT SENT" until this timestamp)
+    alert_banner_until = 0.0
 
-    is_down = False
-    is_still = False
+    while True:
+        ret, frame = cap.read()
 
-    if res.pose_landmarks:
-        landmarks = res.pose_landmarks.landmark
+        # End-of-video handling (VIDEO mode)
+        if not ret:
+            if SOURCE_MODE.upper() == "VIDEO":
+                if len(VIDEO_FILES) > 1:
+                    cap.release()
+                    cap, video_index = switch_to_next_video(video_index)
+                    if not cap.isOpened():
+                        raise RuntimeError(f"ERROR: Could not open video: {VIDEO_FILES[video_index]}")
+                    continue
 
-        mp_draw.draw_landmarks(frame, res.pose_landmarks, mp_pose.POSE_CONNECTIONS)
+                # single video
+                if LOOP_VIDEO:
+                    cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+                    continue
+                else:
+                    print("Video ended.")
+                    break
+            else:
+                print("Webcam read failed.")
+                break
 
-        angle = body_angle_from_vertical(landmarks)
-        pts = extract_keypoints(landmarks)
+        h, w = frame.shape[:2]
 
-        mv = avg_movement(prev_pts, pts) if pts is not None else None
-        prev_pts = pts
+        # --- Time (mm:ss) ---
+        t_ms = cap.get(cv2.CAP_PROP_POS_MSEC)
+        t_sec = int(t_ms // 1000)
+        mm = t_sec // 60
+        ss = t_sec % 60
+        time_str = f"{mm:02d}:{ss:02d}"
 
-        if angle is not None:
-            angle_text = f"angle: {angle:.1f}"
-            is_down = angle >= FALL_ANGLE_THRESHOLD
+        # --- Pose processing ---
+        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        results = pose.process(rgb)
 
-        if mv is not None:
-            move_text = f"move: {mv:.3f}"
-            is_still = mv <= MOVEMENT_THRESHOLD
+        torso_angle = None
+        status = "UP"
 
-        status_text = "DOWN" if is_down else "UP"
+        if results.pose_landmarks:
+            mp_drawing.draw_landmarks(frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
 
-        # Fall logic: must be DOWN + STILL continuously for STAY_DOWN_TIME
-        if is_down and is_still and not triggered:
-            if down_start_time is None:
-                down_start_time = t
-            elif (t - down_start_time) >= STAY_DOWN_TIME:
-                push_alert(t)
-                triggered = True
+            lm = results.pose_landmarks.landmark
+
+            left_sh = lm[mp_pose.PoseLandmark.LEFT_SHOULDER]
+            right_sh = lm[mp_pose.PoseLandmark.RIGHT_SHOULDER]
+            left_hip = lm[mp_pose.PoseLandmark.LEFT_HIP]
+            right_hip = lm[mp_pose.PoseLandmark.RIGHT_HIP]
+
+            # Midpoints in normalized coords (0..1)
+            shx = (left_sh.x + right_sh.x) / 2.0
+            shy = (left_sh.y + right_sh.y) / 2.0
+            hipx = (left_hip.x + right_hip.x) / 2.0
+            hipy = (left_hip.y + right_hip.y) / 2.0
+
+            # Angle vs vertical:
+            # 0 deg = upright, larger = leaning/lying
+            dx = hipx - shx
+            dy = hipy - shy
+            if dy != 0:
+                torso_angle = abs(math.degrees(math.atan2(dx, dy)))
+
+            # --- DOWN tracking ---
+            is_down_now = (torso_angle is not None) and (torso_angle > DOWN_ANGLE_THRESHOLD)
+
+            if is_down_now:
+                if down_start_time is None:
+                    down_start_time = time.time()
+                    alert_sent_for_current_down = False
+
+                down_duration = time.time() - down_start_time
+
+                # Show DOWN earlier
+                status = "DOWN" if down_duration >= DOWN_STATUS_SEC else "UP"
+            else:
+                down_start_time = None
+                alert_sent_for_current_down = False
+                status = "UP"
+
         else:
+            # If no pose found, treat as UP and reset
             down_start_time = None
+            alert_sent_for_current_down = False
+            status = "UP"
 
-    # Overlay info
-    cv2.putText(frame, f"time: {t:.2f}s", (20, 40),
-                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        # --- Overlay: Status, Time, Angle ---
+        angle_str = "NA" if torso_angle is None else f"{torso_angle:.1f}°"
 
-    cv2.putText(frame, f"status: {status_text}", (20, 80),
-                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        # green for UP, red for DOWN
+        status_color = (0, 255, 0) if status == "UP" else (0, 0, 255)
 
-    if angle_text:
-        cv2.putText(frame, angle_text, (20, 120),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        cv2.putText(frame, f"Status: {status}", (15, 35),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.9, status_color, 2)
+        cv2.putText(frame, f"Time: {time_str}", (15, 70),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 255, 255), 2)
+        cv2.putText(frame, f"Angle: {angle_str}", (15, 105),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 255, 255), 2)
 
-    if move_text:
-        cv2.putText(frame, move_text, (20, 160),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        # --- Send alert only after DOWN has lasted long enough ---
+        if down_start_time is not None:
+            down_duration = time.time() - down_start_time
 
-    if triggered:
-        cv2.putText(frame, "ALERT SENT", (20, 200),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+            if (down_duration >= DOWN_ALERT_SEC) and (not alert_sent_for_current_down):
+                now = time.time()
+                if now - last_alert_time >= ALERT_COOLDOWN_SEC:
+                    print(f"🚨 ALERT after {DOWN_ALERT_SEC:.1f}s DOWN at {time_str} | angle={angle_str}")
+                    push_alert(location="Ward A", severity=0.95)
+                    last_alert_time = now
 
-    cv2.imshow("WatchCare AI - Fall Detection Demo", frame)
+                    # show top banner
+                    alert_banner_until = time.time() + ALERT_BANNER_SECONDS
+                    alert_sent_for_current_down = True
 
-    # Keys: q = quit, r = reset for another demo
-    key = cv2.waitKey(30) & 0xFF
-    if key == ord("q"):
-        break
-    if key == ord("r"):
-        triggered = False
-        down_start_time = None
-        prev_pts = None
-        start_wall = time.time()
-        print("Reset done. Ready for next demo.")
+        # --- TOP BANNER: ALERT SENT ---
+        if time.time() < alert_banner_until:
+            overlay = frame.copy()
+            cv2.rectangle(overlay, (0, 0), (w, 60), (0, 0, 255), -1)
+            alpha = 0.6
+            cv2.addWeighted(overlay, alpha, frame, 1 - alpha, 0, frame)
 
-cap.release()
-cv2.destroyAllWindows()
+            text = "ALERT SENT"
+            scale = 1.2
+            thickness = 3
+            (tw, th), _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, scale, thickness)
+            x = max(10, (w - tw) // 2)
+            y = 42
+
+            cv2.putText(frame, text, (x, y),
+                        cv2.FONT_HERSHEY_SIMPLEX, scale, (255, 255, 255), thickness)
+
+        cv2.imshow("WatchCareAI Demo", frame)
+
+        key = cv2.waitKey(1) & 0xFF
+        if key == ord('q'):
+            break
+        if key == ord('n') and SOURCE_MODE.upper() == "VIDEO" and len(VIDEO_FILES) > 1:
+            # Press 'n' to jump to the next video manually
+            cap.release()
+            cap, video_index = switch_to_next_video(video_index)
+            if not cap.isOpened():
+                raise RuntimeError(f"ERROR: Could not open video: {VIDEO_FILES[video_index]}")
+            down_start_time = None
+            alert_sent_for_current_down = False
+            continue
+
+    cap.release()
+    cv2.destroyAllWindows()
+    pose.close()
+
+
+if __name__ == "__main__":
+    main()
