@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_card_light"
+    android:backgroundTint="@color/white"
+    android:padding="16dp"
+    android:layout_marginBottom="12dp"
+    android:elevation="1dp">
+
+    <!-- Alert Title -->
+    <TextView
+        android:id="@+id/tvAlertTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recent Alert picked by you"
+        android:textSize="16sp"
+        android:textColor="@color/text_primary"
+        android:fontFamily="sans-serif-bold"
+        android:layout_marginBottom="4dp" />
+
+    <!-- Claimed By -->
+    <TextView
+        android:id="@+id/tvClaimedBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Claimed by Nurse 1"
+        android:textSize="14sp"
+        android:textColor="@color/text_secondary"
+        android:fontFamily="sans-serif"
+        android:layout_marginBottom="4dp" />
+
+    <!-- Location -->
+    <TextView
+        android:id="@+id/tvAlertLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location: Room 101"
+        android:textSize="12sp"
+        android:textColor="@color/text_tertiary"
+        android:fontFamily="sans-serif"
+        android:layout_marginBottom="4dp" />
+
+    <!-- Timestamp -->
+    <TextView
+        android:id="@+id/tvAlertTimestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5 mins ago"
+        android:textSize="12sp"
+        android:textColor="@color/text_tertiary"
+        android:fontFamily="sans-serif-italic" />
+
+</LinearLayout>

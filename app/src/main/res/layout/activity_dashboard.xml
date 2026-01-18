@@ -4,15 +4,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_secondary">
+    android:background="@color/bg_primary">
 
-    <!-- Main ScrollView -->
+    <!-- Top Bar -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:elevation="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Nurse Greeting -->
+        <TextView
+            android:id="@+id/tvNurseGreeting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Hi, Nurse Name"
+            android:textSize="20sp"
+            android:textColor="@color/text_primary"
+            android:fontFamily="sans-serif-bold" />
+
+        <!-- Theme Toggle Button -->
+        <TextView
+            android:id="@+id/btnThemeToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dark/light\ntoggle"
+            android:textSize="10sp"
+            android:textColor="@color/text_secondary"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginEnd="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground" />
+
+        <!-- Settings Button -->
+        <TextView
+            android:id="@+id/btnSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="settings"
+            android:textSize="10sp"
+            android:textColor="@color/text_secondary"
+            android:gravity="center"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground" />
+    </LinearLayout>
+
+    <!-- Main Content -->
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -20,79 +75,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp"
-            android:paddingTop="40dp">
+            android:padding="24dp">
 
-            <!-- Header Section -->
-            <LinearLayout
+            <!-- Alerts Section Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alerts"
+                android:textSize="32sp"
+                android:textColor="@color/text_primary"
+                android:fontFamily="sans-serif-bold"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Active Alert Container -->
+            <FrameLayout
+                android:id="@+id/alertContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
                 android:layout_marginBottom="32dp">
 
+                <!-- No Alerts State (BLUE/CALM) -->
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/dashboard_greeting"
-                        android:textSize="14sp"
-                        android:textColor="@color/text_secondary" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/dashboard_user_name"
-                        android:textSize="28sp"
-                        android:textColor="@color/text_primary"
-                        android:fontFamily="sans-serif-bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/dashboard_subtitle"
-                        android:textSize="12sp"
-                        android:textColor="@color/text_tertiary"
-                        android:layout_marginTop="4dp" />
-                </LinearLayout>
-
-                <!-- Profile Circle -->
-                <View
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_gradient_circle" />
-            </LinearLayout>
-
-            <!-- Stats Cards Row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:layout_marginBottom="32dp">
-
-                <!-- Active Patients Card -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:id="@+id/noAlertsView"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
                     android:orientation="vertical"
-                    android:background="@drawable/bg_card_light"
-                    android:backgroundTint="@color/white"
-                    android:padding="16dp"
-                    android:layout_marginEnd="8dp"
                     android:gravity="center"
-                    android:elevation="2dp">
+                    android:background="@drawable/bg_card_light"
+                    android:backgroundTint="#E3F2FD"
+                    android:visibility="visible">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="24"
+                        android:text="✓"
+                        android:textSize="72sp"
+                        android:textColor="@color/blue_primary"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_marginBottom="16dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No Alerts"
                         android:textSize="32sp"
                         android:textColor="@color/blue_primary"
                         android:fontFamily="sans-serif-bold" />
@@ -100,154 +125,76 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/stat_active_patients"
-                        android:textSize="10sp"
+                        android:text="All systems normal"
+                        android:textSize="14sp"
                         android:textColor="@color/text_secondary"
-                        android:textAllCaps="true"
-                        android:letterSpacing="0.1"
-                        android:gravity="center" />
+                        android:layout_marginTop="8dp" />
                 </LinearLayout>
 
-                <!-- Alerts Today Card -->
+                <!-- Active Alert State (RED/EMERGENCY) -->
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:id="@+id/activeAlertView"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
                     android:orientation="vertical"
-                    android:background="@drawable/bg_card_light"
-                    android:backgroundTint="@color/white"
-                    android:padding="16dp"
-                    android:layout_marginEnd="8dp"
                     android:gravity="center"
-                    android:elevation="2dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="8"
-                        android:textSize="32sp"
-                        android:textColor="@color/turquoise_primary"
-                        android:fontFamily="sans-serif-bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/stat_alerts_today"
-                        android:textSize="10sp"
-                        android:textColor="@color/text_secondary"
-                        android:textAllCaps="true"
-                        android:letterSpacing="0.1"
-                        android:gravity="center" />
-                </LinearLayout>
-
-                <!-- Critical Card -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
                     android:background="@drawable/bg_card_light"
-                    android:backgroundTint="@color/white"
-                    android:padding="16dp"
-                    android:gravity="center"
-                    android:elevation="2dp">
+                    android:backgroundTint="#FFEBEE"
+                    android:padding="24dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2"
-                        android:textSize="32sp"
+                        android:text="⚠"
+                        android:textSize="72sp"
                         android:textColor="@color/alert_red"
-                        android:fontFamily="sans-serif-bold" />
+                        android:fontFamily="sans-serif-light"
+                        android:layout_marginBottom="16dp" />
 
                     <TextView
+                        android:id="@+id/tvAlertCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/stat_critical"
-                        android:textSize="10sp"
-                        android:textColor="@color/text_secondary"
-                        android:textAllCaps="true"
-                        android:letterSpacing="0.1"
-                        android:gravity="center" />
-                </LinearLayout>
-            </LinearLayout>
+                        android:text="Emergency detected"
+                        android:textSize="24sp"
+                        android:textColor="@color/alert_red"
+                        android:fontFamily="sans-serif-bold"
+                        android:gravity="center"
+                        android:layout_marginBottom="24dp" />
 
-            <!-- Patient List Header -->
+                    <Button
+                        android:id="@+id/btnAcceptAlert"
+                        android:layout_width="200dp"
+                        android:layout_height="60dp"
+                        android:text="Accept"
+                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="sans-serif-bold"
+                        android:background="@drawable/bg_button_primary"
+                        android:backgroundTint="@color/alert_red"
+                        android:elevation="4dp" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- Past Alerts Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/patient_list_title"
-                android:textSize="18sp"
+                android:text="Past Alerts"
+                android:textSize="24sp"
                 android:textColor="@color/text_primary"
                 android:fontFamily="sans-serif-bold"
                 android:layout_marginBottom="16dp" />
 
-            <!-- Patient RecyclerView -->
+            <!-- Past Alerts RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvPatientList"
+                android:id="@+id/rvPastAlerts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false" />
+
         </LinearLayout>
     </ScrollView>
-
-    <!-- Bottom Navigation -->
-    <LinearLayout
-        android:id="@+id/bottomNav"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:paddingHorizontal="32dp"
-        android:gravity="center_vertical"
-        android:elevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <!-- Home Button -->
-        <ImageView
-            android:id="@+id/navHome"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_home"
-            android:tint="@color/blue_primary"
-            android:clickable="true"
-            android:focusable="true" />
-
-        <!-- Stats Button -->
-        <ImageView
-            android:id="@+id/navStats"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_stats"
-            android:tint="@color/text_tertiary"
-            android:clickable="true"
-            android:focusable="true" />
-
-        <!-- Alerts Button -->
-        <ImageView
-            android:id="@+id/navAlerts"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_bell"
-            android:tint="@color/text_tertiary"
-            android:clickable="true"
-            android:focusable="true" />
-
-        <!-- Settings Button -->
-        <ImageView
-            android:id="@+id/navSettings"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_settings"
-            android:tint="@color/text_tertiary"
-            android:clickable="true"
-            android:focusable="true" />
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
