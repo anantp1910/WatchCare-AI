@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "578646243098",
+    "project_id": "watchcare-ai",
+    "storage_bucket": "watchcare-ai.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:578646243098:android:6e71f2d92088bbc3475ea3",
+        "android_client_info": {
+          "package_name": "com.example.watchcareai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNIYJXF7BQzIVOGA-5j16xMq7D4CZ3fK4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
