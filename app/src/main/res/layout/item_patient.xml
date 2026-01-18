@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@drawable/bg_card_light"
     android:backgroundTint="@color/white"
-    android:padding="16dp"
+    android:padding="18dp"
     android:gravity="center_vertical"
     android:layout_marginBottom="12dp"
     android:elevation="1dp">
@@ -14,12 +14,12 @@
     <!-- Room Number Circle -->
     <TextView
         android:id="@+id/tvRoomNumber"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:background="@drawable/bg_circle_icon"
         android:backgroundTint="@color/blue_soft"
         android:text="101"
-        android:textSize="12sp"
+        android:textSize="16sp"
         android:textColor="@color/blue_primary"
         android:fontFamily="sans-serif-bold"
         android:gravity="center"
@@ -37,38 +37,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mr. Johnson"
-            android:textSize="16sp"
+            android:textSize="17sp"
             android:textColor="@color/text_primary"
-            android:fontFamily="sans-serif-medium" />
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="-0.01" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginTop="4dp">
+            android:layout_marginTop="6dp">
 
             <View
                 android:id="@+id/statusDot"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
                 android:background="@drawable/dot_green"
-                android:layout_marginEnd="6dp" />
+                android:layout_marginEnd="8dp" />
 
             <TextView
                 android:id="@+id/tvPatientStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sleeping"
-                android:textSize="12sp"
-                android:textColor="@color/text_secondary" />
+                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:fontFamily="sans-serif" />
         </LinearLayout>
     </LinearLayout>
 
     <!-- Arrow Icon -->
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         android:src="@drawable/ic_chevron_right"
         android:tint="@color/text_tertiary" />
 

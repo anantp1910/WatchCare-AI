@@ -104,7 +104,7 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     private fun setupNurseName() {
-        tvNurseGreeting.text = "Hi, John Doe"
+        tvNurseGreeting.text = "Hi 👋 John Doe"
     }
 
     private fun setupButtons() {

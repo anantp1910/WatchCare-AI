@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/bg_card_light"
     android:backgroundTint="@color/white"
-    android:padding="16dp"
+    android:padding="18dp"
     android:layout_marginBottom="12dp"
     android:elevation="1dp">
 
@@ -16,10 +16,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Recent Alert picked by you"
-        android:textSize="16sp"
+        android:textSize="17sp"
         android:textColor="@color/text_primary"
-        android:fontFamily="sans-serif-bold"
-        android:layout_marginBottom="4dp" />
+        android:fontFamily="sans-serif-medium"
+        android:letterSpacing="-0.01"
+        android:layout_marginBottom="6dp" />
 
     <!-- Claimed By -->
     <TextView
@@ -27,30 +28,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Claimed by Nurse 1"
-        android:textSize="14sp"
+        android:textSize="15sp"
         android:textColor="@color/text_secondary"
         android:fontFamily="sans-serif"
-        android:layout_marginBottom="4dp" />
+        android:layout_marginBottom="8dp" />
 
-    <!-- Location -->
-    <TextView
-        android:id="@+id/tvAlertLocation"
-        android:layout_width="wrap_content"
+    <!-- Location and Timestamp Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Location: Room 101"
-        android:textSize="12sp"
-        android:textColor="@color/text_tertiary"
-        android:fontFamily="sans-serif"
-        android:layout_marginBottom="4dp" />
+        android:orientation="horizontal">
 
-    <!-- Timestamp -->
-    <TextView
-        android:id="@+id/tvAlertTimestamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="5 mins ago"
-        android:textSize="12sp"
-        android:textColor="@color/text_tertiary"
-        android:fontFamily="sans-serif-italic" />
+        <!-- Location -->
+        <TextView
+            android:id="@+id/tvAlertLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Location: Room 101"
+            android:textSize="13sp"
+            android:textColor="@color/text_tertiary"
+            android:fontFamily="sans-serif" />
+
+        <!-- Timestamp -->
+        <TextView
+            android:id="@+id/tvAlertTimestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5 mins ago"
+            android:textSize="13sp"
+            android:textColor="@color/text_tertiary"
+            android:fontFamily="sans-serif" />
+    </LinearLayout>
 
 </LinearLayout>

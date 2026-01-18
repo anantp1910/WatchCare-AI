@@ -4,19 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_primary">
-
-    <!-- Soft blue gradient overlay at top -->
-    <View
-        android:id="@+id/gradientOverlay"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/blue_soft"
-        android:alpha="0.3"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4" />
+    android:background="@drawable/bg_welcome_gradient">
 
     <!-- Main content container -->
     <LinearLayout
@@ -32,26 +20,21 @@
 
         <!-- Logo Container -->
         <FrameLayout
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:layout_marginBottom="32dp">
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:background="@drawable/bg_circle_icon"
+            android:backgroundTint="@color/blue_soft"
+            android:layout_marginBottom="40dp"
+            android:elevation="2dp">
 
-            <!-- Blue background card (NOT white!) -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_card_light"
-                android:backgroundTint="@color/blue_soft"
-                android:elevation="8dp" />
-
-            <!-- Logo Image - Now with blue tint so it's visible! -->
+            <!-- Logo Image -->
             <ImageView
                 android:id="@+id/imgLogo"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:paddingTop="26dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_check"
-                android:tint="@color/blue_primary"
+                android:src="@drawable/logo"
                 android:contentDescription="WatchCare AI Logo" />
         </FrameLayout>
 
@@ -59,22 +42,37 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/welcome_title"
-            android:textSize="40sp"
-            android:textColor="@color/text_primary"
+            android:text="WatchCare-AI"
+            android:textSize="42sp"
+            android:textColor="@color/blue_primary"
             android:fontFamily="sans-serif-black"
-            android:layout_marginBottom="8dp" />
+            android:letterSpacing="-0.02"
+            android:layout_marginBottom="12dp" />
 
-        <!-- Subtitle -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Keeping Patients Safe When Every Second Matters Most."
+            android:textSize="20sp"
+            android:textColor="@color/text_secondary"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:paddingTop="50px"
+            android:lineSpacingExtra="6dp"
+            android:layout_marginBottom="12dp" />
+        <!-- Subtitle -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
             android:text="@string/welcome_subtitle"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/text_secondary"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:lineSpacingExtra="4dp" />
+            android:lineSpacingExtra="6dp" />
 
     </LinearLayout>
 
@@ -82,15 +80,16 @@
     <Button
         android:id="@+id/btnGetStarted"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="58dp"
         android:text="@string/btn_get_started"
         android:textColor="@color/white"
-        android:textSize="16sp"
-        android:fontFamily="sans-serif-medium"
-        android:background="@drawable/bg_button_primary"
-        android:paddingVertical="16dp"
-        android:layout_margin="32dp"
-        android:elevation="4dp"
+        android:textSize="17sp"
+        android:fontFamily="sans-serif-bold"
+        android:letterSpacing="0.02"
+        android:textAllCaps="false"
+        android:background="@drawable/bg_welcome_button"
+        android:layout_margin="28dp"
+        android:elevation="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_primary"
-    android:padding="32dp">
+    android:background="@color/bg_secondary"
+    android:padding="28dp">
 
     <!-- Lock Icon Container -->
     <LinearLayout
@@ -19,24 +19,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/loginForm"
-        app:layout_constraintVertical_bias="0.3">
+        app:layout_constraintVertical_bias="0.25">
 
-        <!-- Lock Icon Circle with card background -->
+        <!-- Lock Icon Circle -->
         <FrameLayout
-            android:layout_width="88dp"
-            android:layout_height="88dp"
-            android:background="@drawable/bg_card_light"
-            android:elevation="4dp"
-            android:layout_marginBottom="24dp">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/blue_soft" />
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/bg_circle_icon"
+            android:backgroundTint="@color/blue_soft"
+            android:layout_marginBottom="28dp"
+            android:elevation="2dp">
 
             <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 android:layout_gravity="center"
                 android:src="@android:drawable/ic_lock_idle_lock"
                 android:tint="@color/blue_primary" />
@@ -47,18 +43,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login_title"
-            android:textSize="32sp"
+            android:textSize="34sp"
             android:textColor="@color/text_primary"
-            android:fontFamily="sans-serif-bold" />
+            android:fontFamily="sans-serif-bold"
+            android:letterSpacing="-0.02" />
 
         <!-- Subtitle -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login_subtitle"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/text_secondary"
-            android:layout_marginTop="4dp" />
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="8dp" />
     </LinearLayout>
 
     <!-- Login Form -->
@@ -77,13 +75,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_email"
-            android:textSize="12sp"
+            android:textSize="13sp"
             android:textColor="@color/text_secondary"
             android:fontFamily="sans-serif-medium"
             android:textAllCaps="true"
-            android:letterSpacing="0.1"
+            android:letterSpacing="0.08"
             android:layout_marginStart="4dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="10dp" />
 
         <!-- Email Input Field -->
         <LinearLayout
@@ -92,16 +90,16 @@
             android:background="@drawable/bg_input_light"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="16dp"
+            android:padding="18dp"
             android:layout_marginBottom="20dp"
             android:elevation="1dp">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:src="@android:drawable/ic_dialog_email"
                 android:tint="@color/blue_primary"
-                android:layout_marginEnd="12dp" />
+                android:layout_marginEnd="14dp" />
 
             <EditText
                 android:id="@+id/etEmail"
@@ -113,7 +111,8 @@
                 android:textColorHint="@color/text_hint"
                 android:inputType="textEmailAddress"
                 android:background="@android:color/transparent"
-                android:textSize="15sp" />
+                android:textSize="16sp"
+                android:fontFamily="sans-serif" />
         </LinearLayout>
 
         <!-- Password Label -->
@@ -121,13 +120,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_password"
-            android:textSize="12sp"
+            android:textSize="13sp"
             android:textColor="@color/text_secondary"
             android:fontFamily="sans-serif-medium"
             android:textAllCaps="true"
-            android:letterSpacing="0.1"
+            android:letterSpacing="0.08"
             android:layout_marginStart="4dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="10dp" />
 
         <!-- Password Input Field -->
         <LinearLayout
@@ -136,16 +135,16 @@
             android:background="@drawable/bg_input_light"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="16dp"
-            android:layout_marginBottom="12dp"
+            android:padding="18dp"
+            android:layout_marginBottom="16dp"
             android:elevation="1dp">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:src="@android:drawable/ic_lock_idle_lock"
                 android:tint="@color/blue_primary"
-                android:layout_marginEnd="12dp" />
+                android:layout_marginEnd="14dp" />
 
             <EditText
                 android:id="@+id/etPassword"
@@ -157,7 +156,8 @@
                 android:textColorHint="@color/text_hint"
                 android:inputType="textPassword"
                 android:background="@android:color/transparent"
-                android:textSize="15sp" />
+                android:textSize="16sp"
+                android:fontFamily="sans-serif" />
         </LinearLayout>
 
         <!-- Forgot Password Link -->
@@ -166,26 +166,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/link_forgot_password"
-            android:textSize="14sp"
+            android:textSize="15sp"
             android:textColor="@color/blue_primary"
             android:layout_gravity="end"
             android:layout_marginBottom="32dp"
             android:clickable="true"
             android:focusable="true"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground"
             android:fontFamily="sans-serif-medium" />
 
         <!-- Login Button -->
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="58dp"
             android:text="@string/btn_login"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="17sp"
             android:fontFamily="sans-serif-bold"
-            android:background="@drawable/bg_button_primary"
-            android:paddingVertical="16dp"
-            android:elevation="4dp" />
+            android:letterSpacing="0.02"
+            android:textAllCaps="false"
+            android:background="@drawable/bg_login_button"
+            android:elevation="2dp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
