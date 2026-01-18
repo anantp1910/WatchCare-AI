@@ -23,7 +23,7 @@ import mediapipe as mp
 
 KEY_PATH = "serviceAccountKey.json"
 
-SOURCE_MODE = "VIDEO"  # "VIDEO" or "WEBCAM"
+SOURCE_MODE = "WEBCAM"  # "VIDEO" or "WEBCAM"
 
 # If VIDEO (playlist):
 VIDEO_FILES = ["WhatsApp Video 2026-01-18 at 5.57.36 AM.mp4"
@@ -41,8 +41,8 @@ ALERT_COOLDOWN_SEC = 10
 DOWN_ANGLE_THRESHOLD = 45.0
 
 # Show DOWN earlier, send alert later
-DOWN_STATUS_SEC = 0.5   # show "DOWN" after being down for 0.5s
-DOWN_ALERT_SEC  = 2.0   # send alert after being down for 2.0s
+DOWN_STATUS_SEC = 0.4   # show "DOWN" after being down for 0.5s
+DOWN_ALERT_SEC  = 4.0   # send alert after being down for 2.0s
 
 # Top banner duration (seconds) after alert push
 ALERT_BANNER_SECONDS = 5.0
