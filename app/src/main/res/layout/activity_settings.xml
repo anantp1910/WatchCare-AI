@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_secondary"
+    android:scrollbars="none"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:paddingTop="40dp">
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_title"
+            android:textSize="32sp"
+            android:textColor="@color/text_primary"
+            android:fontFamily="sans-serif-bold"
+            android:letterSpacing="-0.02"
+            android:layout_marginBottom="28dp" />
+
+        <!-- User Profile Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card_light"
+            android:backgroundTint="@color/white"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="28dp"
+            android:elevation="1dp">
+
+            <!-- Avatar -->
+            <View
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/bg_gradient_circle"
+                android:layout_marginEnd="16dp" />
+
+            <!-- User Info -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_name"
+                    android:textSize="18sp"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="-0.01" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_role"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- Edit Button -->
+            <TextView
+                android:id="@+id/btnEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_edit"
+                android:textSize="14sp"
+                android:textColor="@color/blue_primary"
+                android:fontFamily="sans-serif-medium"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackground" />
+        </LinearLayout>
+
+        <!-- General Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/section_general"
+            android:textSize="12sp"
+            android:textColor="@color/text_secondary"
+            android:fontFamily="sans-serif-medium"
+            android:textAllCaps="true"
+            android:letterSpacing="0.1"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="4dp" />
+
+        <!-- Notifications Setting -->
+        <LinearLayout
+            android:id="@+id/btnNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card_light"
+            android:backgroundTint="@color/white"
+            android:orientation="horizontal"
+            android:padding="18dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:elevation="1dp">
+
+            <!-- Icon -->
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_circle_icon"
+                android:backgroundTint="@color/blue_soft"
+                android:layout_marginEnd="16dp" />
+
+            <!-- Text -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/setting_notifications"
+                android:textSize="16sp"
+                android:textColor="@color/text_primary"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="-0.01" />
+
+            <!-- Arrow -->
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_chevron_right"
+                android:tint="@color/text_tertiary" />
+        </LinearLayout>
+
+        <!-- Privacy & Security Setting -->
+        <LinearLayout
+            android:id="@+id/btnPrivacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card_light"
+            android:backgroundTint="@color/white"
+            android:orientation="horizontal"
+            android:padding="18dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="28dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:elevation="1dp">
+
+            <!-- Icon -->
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_circle_icon"
+                android:backgroundTint="@color/turquoise_soft"
+                android:layout_marginEnd="16dp" />
+
+            <!-- Text -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/setting_privacy"
+                android:textSize="16sp"
+                android:textColor="@color/text_primary"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="-0.01" />
+
+            <!-- Arrow -->
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_chevron_right"
+                android:tint="@color/text_tertiary" />
+        </LinearLayout>
+
+        <!-- Surveillance Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/section_surveillance"
+            android:textSize="12sp"
+            android:textColor="@color/text_secondary"
+            android:fontFamily="sans-serif-medium"
+            android:textAllCaps="true"
+            android:letterSpacing="0.1"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="4dp" />
+
+        <!-- Detection Sensitivity Toggle -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card_light"
+            android:backgroundTint="@color/white"
+            android:orientation="horizontal"
+            android:padding="18dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="32dp"
+            android:elevation="1dp">
+
+            <!-- Icon -->
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_circle_icon"
+                android:backgroundTint="@color/alert_red_soft"
+                android:layout_marginEnd="16dp" />
+
+            <!-- Text -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setting_detection_sensitivity"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="-0.01" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setting_detection_desc"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- Toggle Switch -->
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchDetection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true" />
+        </LinearLayout>
+
+        <!-- Logout Button -->
+        <Button
+            android:id="@+id/btnLogout"
+            style="@android:style/Widget.Material.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_logout"
+            android:textColor="@color/alert_red"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:drawableStart="@android:drawable/ic_menu_close_clear_cancel"
+            android:drawableTint="@color/alert_red"
+            android:paddingVertical="16dp" />
+
+    </LinearLayout>
+</ScrollView>
