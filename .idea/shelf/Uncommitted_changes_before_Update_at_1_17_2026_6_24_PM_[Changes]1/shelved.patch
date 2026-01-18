@@ -1,0 +1,574 @@
+Index: gradle/libs.versions.toml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>[versions]\r\nagp = \"9.0.0\"\r\ncoreKtx = \"1.10.1\"\r\njunit = \"4.13.2\"\r\njunitVersion = \"1.1.5\"\r\nespressoCore = \"3.5.1\"\r\nappcompat = \"1.6.1\"\r\nmaterial = \"1.10.0\"\r\nactivity = \"1.8.0\"\r\nconstraintlayout = \"2.1.4\"\r\n\r\n[libraries]\r\nandroidx-core-ktx = { group = \"androidx.core\", name = \"core-ktx\", version.ref = \"coreKtx\" }\r\njunit = { group = \"junit\", name = \"junit\", version.ref = \"junit\" }\r\nandroidx-junit = { group = \"androidx.test.ext\", name = \"junit\", version.ref = \"junitVersion\" }\r\nandroidx-espresso-core = { group = \"androidx.test.espresso\", name = \"espresso-core\", version.ref = \"espressoCore\" }\r\nandroidx-appcompat = { group = \"androidx.appcompat\", name = \"appcompat\", version.ref = \"appcompat\" }\r\nmaterial = { group = \"com.google.android.material\", name = \"material\", version.ref = \"material\" }\r\nandroidx-activity = { group = \"androidx.activity\", name = \"activity\", version.ref = \"activity\" }\r\nandroidx-constraintlayout = { group = \"androidx.constraintlayout\", name = \"constraintlayout\", version.ref = \"constraintlayout\" }\r\n\r\n[plugins]\r\nandroid-application = { id = \"com.android.application\", version.ref = \"agp\" }\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/gradle/libs.versions.toml b/gradle/libs.versions.toml
+--- a/gradle/libs.versions.toml	(revision 504d5bae74afabd2ce0ff494d160a396a0d97da5)
++++ b/gradle/libs.versions.toml	(date 1768690759259)
+@@ -22,3 +22,6 @@
+ [plugins]
+ android-application = { id = "com.android.application", version.ref = "agp" }
+ 
++
++
++
+Index: build.gradle.kts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>// Top-level build file where you can add configuration options common to all sub-projects/modules.\r\nplugins {\r\n    alias(libs.plugins.android.application) apply false\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/build.gradle.kts b/build.gradle.kts
+--- a/build.gradle.kts	(revision 504d5bae74afabd2ce0ff494d160a396a0d97da5)
++++ b/build.gradle.kts	(date 1768690984907)
+@@ -1,4 +1,5 @@
+-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+ plugins {
+-    alias(libs.plugins.android.application) apply false
++    id("com.android.application") version "8.7.3" apply false
++    id("org.jetbrains.kotlin.android") version "1.9.24" apply false
++    id("com.google.gms.google-services") version "4.4.2" apply false
+ }
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/main\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".MainActivity\">\r\n\r\n    <TextView\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Hello World!\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\" />\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+--- a/app/src/main/res/layout/activity_main.xml	(revision 504d5bae74afabd2ce0ff494d160a396a0d97da5)
++++ b/app/src/main/res/layout/activity_main.xml	(date 1768682073116)
+@@ -1,19 +1,30 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
++<androidx.constraintlayout.widget.ConstraintLayout
++    xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+-    xmlns:tools="http://schemas.android.com/tools"
+     android:id="@+id/main"
+     android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    tools:context=".MainActivity">
++    android:layout_height="match_parent">
+ 
+     <TextView
+-        android:layout_width="wrap_content"
++        android:id="@+id/titleText"
++        android:layout_width="0dp"
+         android:layout_height="wrap_content"
+-        android:text="Hello World!"
++        android:text="WatchCare AI — Alerts"
++        android:textSize="20sp"
++        android:textStyle="bold"
++        android:padding="16dp"
++        app:layout_constraintTop_toTopOf="parent"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintEnd_toEndOf="parent"/>
++
++    <androidx.recyclerview.widget.RecyclerView
++        android:id="@+id/alertsRecycler"
++        android:layout_width="0dp"
++        android:layout_height="0dp"
++        android:padding="12dp"
++        app:layout_constraintTop_toBottomOf="@id/titleText"
+         app:layout_constraintBottom_toBottomOf="parent"
+-        app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+-        app:layout_constraintTop_toTopOf="parent" />
+-
+-</androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
++        app:layout_constraintEnd_toEndOf="parent"/>
++</androidx.constraintlayout.widget.ConstraintLayout>
+Index: app/src/main/java/com/example/watchcareai/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.watchcareai\r\n\r\nimport android.os.Bundle\r\nimport androidx.activity.enableEdgeToEdge\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport androidx.core.view.ViewCompat\r\nimport androidx.core.view.WindowInsetsCompat\r\n\r\nclass MainActivity : AppCompatActivity() {\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        enableEdgeToEdge()\r\n        setContentView(R.layout.activity_main)\r\n        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->\r\n            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())\r\n            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)\r\n            insets\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/watchcareai/MainActivity.kt b/app/src/main/java/com/example/watchcareai/MainActivity.kt
+--- a/app/src/main/java/com/example/watchcareai/MainActivity.kt	(revision 504d5bae74afabd2ce0ff494d160a396a0d97da5)
++++ b/app/src/main/java/com/example/watchcareai/MainActivity.kt	(date 1768684019841)
+@@ -1,20 +1,38 @@
+ package com.example.watchcareai
+ 
++import com.google.firebase.firestore.FirebaseFirestore
+ import android.os.Bundle
+-import androidx.activity.enableEdgeToEdge
+ import androidx.appcompat.app.AppCompatActivity
+-import androidx.core.view.ViewCompat
+-import androidx.core.view.WindowInsetsCompat
++import androidx.recyclerview.widget.LinearLayoutManager
++import androidx.recyclerview.widget.RecyclerView
+ 
+ class MainActivity : AppCompatActivity() {
++
++    private val db = FirebaseFirestore.getInstance()
++
++    private lateinit var adapter: AlertAdapter
++
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
+-        enableEdgeToEdge()
+         setContentView(R.layout.activity_main)
+-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+-            insets
++
++        val rv = findViewById<RecyclerView>(R.id.alertsRecycler)
++        rv.layoutManager = LinearLayoutManager(this)
++
++        adapter = AlertAdapter(emptyList()) { alert ->
++            // later: open detail screen
+         }
++        rv.adapter = adapter
++
++        val demoAlerts = listOf(
++            Alert(id = "1", location = "Waiting Room Cam 3", severity = 0.86, status = "active"),
++            Alert(id = "2", location = "Hallway Zone 2", severity = 0.72, status = "claimed", claimed_by = "Nurse A")
++        )
++
++        adapter.update(demoAlerts)
++
++        // Debug: proves onCreate ran
++        title = "Loaded: ${demoAlerts.size}"
+     }
+-}
+\ No newline at end of file
++}
++
+Index: app/build.gradle.kts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    alias(libs.plugins.android.application)\r\n}\r\n\r\nandroid {\r\n    namespace = \"com.example.watchcareai\"\r\n    compileSdk {\r\n        version = release(36)\r\n    }\r\n\r\n    defaultConfig {\r\n        applicationId = \"com.example.watchcareai\"\r\n        minSdk = 24\r\n        targetSdk = 36\r\n        versionCode = 1\r\n        versionName = \"1.0\"\r\n\r\n        testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            isMinifyEnabled = false\r\n            proguardFiles(\r\n                getDefaultProguardFile(\"proguard-android-optimize.txt\"),\r\n                \"proguard-rules.pro\"\r\n            )\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility = JavaVersion.VERSION_11\r\n        targetCompatibility = JavaVersion.VERSION_11\r\n    }\r\n}\r\n\r\ndependencies {\r\n    implementation(libs.androidx.core.ktx)\r\n    implementation(libs.androidx.appcompat)\r\n    implementation(libs.material)\r\n    implementation(libs.androidx.activity)\r\n    implementation(libs.androidx.constraintlayout)\r\n    testImplementation(libs.junit)\r\n    androidTestImplementation(libs.androidx.junit)\r\n    androidTestImplementation(libs.androidx.espresso.core)\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle.kts b/app/build.gradle.kts
+--- a/app/build.gradle.kts	(revision 504d5bae74afabd2ce0ff494d160a396a0d97da5)
++++ b/app/build.gradle.kts	(date 1768691188745)
+@@ -1,20 +1,19 @@
+ plugins {
+-    alias(libs.plugins.android.application)
++    id("com.android.application")
++    id("org.jetbrains.kotlin.android")
++    id("com.google.gms.google-services")
+ }
+ 
+ android {
+     namespace = "com.example.watchcareai"
+-    compileSdk {
+-        version = release(36)
+-    }
++    compileSdk = 35
+ 
+     defaultConfig {
+         applicationId = "com.example.watchcareai"
+         minSdk = 24
+-        targetSdk = 36
++        targetSdk = 35
+         versionCode = 1
+         versionName = "1.0"
+-
+         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+     }
+ 
+@@ -27,19 +26,24 @@
+             )
+         }
+     }
++
+     compileOptions {
+-        sourceCompatibility = JavaVersion.VERSION_11
+-        targetCompatibility = JavaVersion.VERSION_11
++        sourceCompatibility = JavaVersion.VERSION_17
++        targetCompatibility = JavaVersion.VERSION_17
++    }
++    kotlinOptions {
++        jvmTarget = "17"
+     }
+ }
+ 
+ dependencies {
+-    implementation(libs.androidx.core.ktx)
+-    implementation(libs.androidx.appcompat)
+-    implementation(libs.material)
+-    implementation(libs.androidx.activity)
+-    implementation(libs.androidx.constraintlayout)
+-    testImplementation(libs.junit)
+-    androidTestImplementation(libs.androidx.junit)
+-    androidTestImplementation(libs.androidx.espresso.core)
+-}
+\ No newline at end of file
++    implementation("androidx.core:core-ktx:1.13.1")
++    implementation("androidx.appcompat:appcompat:1.7.0")
++    implementation("com.google.android.material:material:1.12.0")
++
++    implementation("androidx.recyclerview:recyclerview:1.3.2")
++    implementation("androidx.cardview:cardview:1.0.0")
++
++    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
++    implementation("com.google.firebase:firebase-firestore-ktx")
++}
+Index: app/src/main/java/com/example/watchcareai/AlertAdapter.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/watchcareai/AlertAdapter.kt b/app/src/main/java/com/example/watchcareai/AlertAdapter.kt
+new file mode 100644
+--- /dev/null	(date 1768682557631)
++++ b/app/src/main/java/com/example/watchcareai/AlertAdapter.kt	(date 1768682557631)
+@@ -0,0 +1,40 @@
++package com.example.watchcareai
++
++import android.view.LayoutInflater
++import android.view.View
++import android.view.ViewGroup
++import android.widget.TextView
++import androidx.recyclerview.widget.RecyclerView
++
++class AlertAdapter(
++    private var items: List<Alert>,
++    private val onClick: (Alert) -> Unit
++) : RecyclerView.Adapter<AlertAdapter.VH>() {
++
++    class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
++        val locationText: TextView = itemView.findViewById(R.id.locationText)
++        val severityText: TextView = itemView.findViewById(R.id.severityText)
++        val statusText: TextView = itemView.findViewById(R.id.statusText)
++    }
++
++    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
++        val v = LayoutInflater.from(parent.context)
++            .inflate(R.layout.item_alert, parent, false)
++        return VH(v)
++    }
++
++    override fun onBindViewHolder(holder: VH, position: Int) {
++        val alert = items[position]
++        holder.locationText.text = alert.location
++        holder.severityText.text = "Severity: %.2f".format(alert.severity)
++        holder.statusText.text = "Status: ${alert.status}"
++        holder.itemView.setOnClickListener { onClick(alert) }
++    }
++
++    override fun getItemCount(): Int = items.size
++
++    fun update(newItems: List<Alert>) {
++        items = newItems
++        notifyDataSetChanged()
++    }
++}
+Index: app/google-services.json
+===================================================================
+diff --git a/app/google-services.json b/app/google-services.json
+new file mode 100644
+--- /dev/null	(date 1768689073195)
++++ b/app/google-services.json	(date 1768689073195)
+@@ -0,0 +1,29 @@
++{
++  "project_info": {
++    "project_number": "578646243098",
++    "project_id": "watchcare-ai",
++    "storage_bucket": "watchcare-ai.firebasestorage.app"
++  },
++  "client": [
++    {
++      "client_info": {
++        "mobilesdk_app_id": "1:578646243098:android:6e71f2d92088bbc3475ea3",
++        "android_client_info": {
++          "package_name": "com.example.watchcareai"
++        }
++      },
++      "oauth_client": [],
++      "api_key": [
++        {
++          "current_key": "AIzaSyDNIYJXF7BQzIVOGA-5j16xMq7D4CZ3fK4"
++        }
++      ],
++      "services": {
++        "appinvite_service": {
++          "other_platform_oauth_client": []
++        }
++      }
++    }
++  ],
++  "configuration_version": "1"
++}
+\ No newline at end of file
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\">\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"\r\n        android:fullBackupContent=\"@xml/backup_rules\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/Theme.WatchCareAI\">\r\n        <activity\r\n            android:name=\".MainActivity\"\r\n            android:exported=\"true\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml	(revision 504d5bae74afabd2ce0ff494d160a396a0d97da5)
++++ b/app/src/main/AndroidManifest.xml	(date 1768682057086)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:tools="http://schemas.android.com/tools">
++    xmlns:tools="http://schemas.android.com/tools" >
+ 
+     <application
+         android:allowBackup="true"
+@@ -10,10 +10,10 @@
+         android:label="@string/app_name"
+         android:roundIcon="@mipmap/ic_launcher_round"
+         android:supportsRtl="true"
+-        android:theme="@style/Theme.WatchCareAI">
++        android:theme="@style/Theme.WatchCareAI" >
+         <activity
+             android:name=".MainActivity"
+-            android:exported="true">
++            android:exported="true" >
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+ 
+Index: .idea/deploymentTargetSelector.xml
+===================================================================
+diff --git a/.idea/deploymentTargetSelector.xml b/.idea/deploymentTargetSelector.xml
+new file mode 100644
+--- /dev/null	(date 1768682078777)
++++ b/.idea/deploymentTargetSelector.xml	(date 1768682078777)
+@@ -0,0 +1,10 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="deploymentTargetSelector">
++    <selectionStates>
++      <SelectionState runConfigName="app">
++        <option name="selectionMode" value="DROPDOWN" />
++      </SelectionState>
++    </selectionStates>
++  </component>
++</project>
+\ No newline at end of file
+Index: app/src/main/res/layout/item_alert.xml
+===================================================================
+diff --git a/app/src/main/res/layout/item_alert.xml b/app/src/main/res/layout/item_alert.xml
+new file mode 100644
+--- /dev/null	(date 1768682332713)
++++ b/app/src/main/res/layout/item_alert.xml	(date 1768682332713)
+@@ -0,0 +1,39 @@
++<?xml version="1.0" encoding="utf-8"?>
++<androidx.cardview.widget.CardView
++    xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:layout_width="match_parent"
++    android:layout_height="wrap_content"
++    android:layout_marginBottom="10dp"
++    app:cardCornerRadius="14dp"
++    app:cardElevation="4dp">
++
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:orientation="vertical"
++        android:padding="14dp">
++
++        <TextView
++            android:id="@+id/locationText"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:text="Waiting Room Cam 3"
++            android:textSize="16sp"
++            android:textStyle="bold"/>
++
++        <TextView
++            android:id="@+id/severityText"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:text="Severity: 0.86"
++            android:layout_marginTop="6dp"/>
++
++        <TextView
++            android:id="@+id/statusText"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:text="Status: active"
++            android:layout_marginTop="4dp"/>
++    </LinearLayout>
++</androidx.cardview.widget.CardView>
+Index: .idea/compiler.xml
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+new file mode 100644
+--- /dev/null	(date 1768681219122)
++++ b/.idea/compiler.xml	(date 1768681219122)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="CompilerConfiguration">
++    <bytecodeTargetLevel target="21" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/codeStyles/Project.xml
+===================================================================
+diff --git a/.idea/codeStyles/Project.xml b/.idea/codeStyles/Project.xml
+new file mode 100644
+--- /dev/null	(date 1768681219147)
++++ b/.idea/codeStyles/Project.xml	(date 1768681219147)
+@@ -0,0 +1,123 @@
++<component name="ProjectCodeStyleConfiguration">
++  <code_scheme name="Project" version="173">
++    <JetCodeStyleSettings>
++      <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
++    </JetCodeStyleSettings>
++    <codeStyleSettings language="XML">
++      <option name="FORCE_REARRANGE_MODE" value="1" />
++      <indentOptions>
++        <option name="CONTINUATION_INDENT_SIZE" value="4" />
++      </indentOptions>
++      <arrangement>
++        <rules>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>xmlns:android</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>^$</XML_NAMESPACE>
++                </AND>
++              </match>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>xmlns:.*</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>^$</XML_NAMESPACE>
++                </AND>
++              </match>
++              <order>BY_NAME</order>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>.*:id</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
++                </AND>
++              </match>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>.*:name</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
++                </AND>
++              </match>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>name</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>^$</XML_NAMESPACE>
++                </AND>
++              </match>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>style</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>^$</XML_NAMESPACE>
++                </AND>
++              </match>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>.*</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>^$</XML_NAMESPACE>
++                </AND>
++              </match>
++              <order>BY_NAME</order>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>.*</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
++                </AND>
++              </match>
++              <order>ANDROID_ATTRIBUTE_ORDER</order>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>.*</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>.*</XML_NAMESPACE>
++                </AND>
++              </match>
++              <order>BY_NAME</order>
++            </rule>
++          </section>
++        </rules>
++      </arrangement>
++    </codeStyleSettings>
++    <codeStyleSettings language="kotlin">
++      <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
++    </codeStyleSettings>
++  </code_scheme>
++</component>
+\ No newline at end of file
+Index: .idea/codeStyles/codeStyleConfig.xml
+===================================================================
+diff --git a/.idea/codeStyles/codeStyleConfig.xml b/.idea/codeStyles/codeStyleConfig.xml
+new file mode 100644
+--- /dev/null	(date 1768681219147)
++++ b/.idea/codeStyles/codeStyleConfig.xml	(date 1768681219147)
+@@ -0,0 +1,5 @@
++<component name="ProjectCodeStyleConfiguration">
++  <state>
++    <option name="USE_PER_PROJECT_SETTINGS" value="true" />
++  </state>
++</component>
+\ No newline at end of file
+Index: app/src/main/java/com/example/watchcareai/Alert.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/watchcareai/Alert.kt b/app/src/main/java/com/example/watchcareai/Alert.kt
+new file mode 100644
+--- /dev/null	(date 1768682713608)
++++ b/app/src/main/java/com/example/watchcareai/Alert.kt	(date 1768682713608)
+@@ -0,0 +1,9 @@
++package com.example.watchcareai
++
++data class Alert(
++    val id: String = "",
++    val location: String = "",
++    val severity: Double = 0.0,
++    val status: String = "active",
++    val claimed_by: String? = null
++)
+\ No newline at end of file
