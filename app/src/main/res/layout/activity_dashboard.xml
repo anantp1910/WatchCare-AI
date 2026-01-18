@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/slate_950">
+    android:background="@color/bg_secondary">
 
     <!-- Main ScrollView -->
     <ScrollView
@@ -42,14 +42,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/dashboard_greeting"
                         android:textSize="14sp"
-                        android:textColor="@color/slate_400" />
+                        android:textColor="@color/text_secondary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/dashboard_user_name"
                         android:textSize="28sp"
-                        android:textColor="@color/white"
+                        android:textColor="@color/text_primary"
                         android:fontFamily="sans-serif-bold" />
 
                     <TextView
@@ -57,18 +57,15 @@
                         android:layout_height="wrap_content"
                         android:text="@string/dashboard_subtitle"
                         android:textSize="12sp"
-                        android:textColor="@color/slate_500"
+                        android:textColor="@color/text_tertiary"
                         android:layout_marginTop="4dp" />
                 </LinearLayout>
 
-                <!-- Profile Picture Placeholder -->
-                <ImageView
+                <!-- Profile Circle -->
+                <View
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:background="@drawable/bg_gradient_circle"
-                    android:padding="12dp"
-                    android:src="@android:drawable/ic_menu_myplaces"
-                    android:tint="@color/slate_900" />
+                    android:background="@drawable/bg_gradient_circle" />
             </LinearLayout>
 
             <!-- Stats Cards Row -->
@@ -84,17 +81,20 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_glass"
                     android:orientation="vertical"
+                    android:background="@drawable/bg_card_light"
+                    android:backgroundTint="@color/white"
                     android:padding="16dp"
-                    android:layout_marginEnd="8dp">
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center"
+                    android:elevation="2dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="24"
                         android:textSize="32sp"
-                        android:textColor="@color/white"
+                        android:textColor="@color/blue_primary"
                         android:fontFamily="sans-serif-bold" />
 
                     <TextView
@@ -102,8 +102,10 @@
                         android:layout_height="wrap_content"
                         android:text="@string/stat_active_patients"
                         android:textSize="10sp"
-                        android:textColor="@color/slate_400"
-                        android:layout_marginTop="4dp" />
+                        android:textColor="@color/text_secondary"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.1"
+                        android:gravity="center" />
                 </LinearLayout>
 
                 <!-- Alerts Today Card -->
@@ -111,17 +113,20 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_glass"
                     android:orientation="vertical"
+                    android:background="@drawable/bg_card_light"
+                    android:backgroundTint="@color/white"
                     android:padding="16dp"
-                    android:layout_marginEnd="8dp">
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center"
+                    android:elevation="2dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="8"
                         android:textSize="32sp"
-                        android:textColor="@color/white"
+                        android:textColor="@color/turquoise_primary"
                         android:fontFamily="sans-serif-bold" />
 
                     <TextView
@@ -129,8 +134,10 @@
                         android:layout_height="wrap_content"
                         android:text="@string/stat_alerts_today"
                         android:textSize="10sp"
-                        android:textColor="@color/slate_400"
-                        android:layout_marginTop="4dp" />
+                        android:textColor="@color/text_secondary"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.1"
+                        android:gravity="center" />
                 </LinearLayout>
 
                 <!-- Critical Card -->
@@ -138,16 +145,19 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_glass"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:background="@drawable/bg_card_light"
+                    android:backgroundTint="@color/white"
+                    android:padding="16dp"
+                    android:gravity="center"
+                    android:elevation="2dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="2"
                         android:textSize="32sp"
-                        android:textColor="@color/red_500"
+                        android:textColor="@color/alert_red"
                         android:fontFamily="sans-serif-bold" />
 
                     <TextView
@@ -155,28 +165,29 @@
                         android:layout_height="wrap_content"
                         android:text="@string/stat_critical"
                         android:textSize="10sp"
-                        android:textColor="@color/slate_400"
-                        android:layout_marginTop="4dp" />
+                        android:textColor="@color/text_secondary"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.1"
+                        android:gravity="center" />
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Patient List Section Header -->
+            <!-- Patient List Header -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/section_patient_list"
+                android:text="@string/patient_list_title"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/text_primary"
                 android:fontFamily="sans-serif-bold"
                 android:layout_marginBottom="16dp" />
 
-            <!-- Patient List (RecyclerView will go here in code) -->
+            <!-- Patient RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPatientList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false" />
-
         </LinearLayout>
     </ScrollView>
 
@@ -185,10 +196,11 @@
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
         android:layout_height="80dp"
-        android:background="@drawable/bg_glass_panel"
+        android:background="@color/white"
         android:orientation="horizontal"
-        android:gravity="center"
         android:paddingHorizontal="32dp"
+        android:gravity="center_vertical"
+        android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -200,7 +212,7 @@
             android:layout_height="24dp"
             android:layout_weight="1"
             android:src="@drawable/ic_home"
-            android:tint="@color/blue_400"
+            android:tint="@color/blue_primary"
             android:clickable="true"
             android:focusable="true" />
 
@@ -211,7 +223,7 @@
             android:layout_height="24dp"
             android:layout_weight="1"
             android:src="@drawable/ic_stats"
-            android:tint="@color/slate_500"
+            android:tint="@color/text_tertiary"
             android:clickable="true"
             android:focusable="true" />
 
@@ -222,7 +234,7 @@
             android:layout_height="24dp"
             android:layout_weight="1"
             android:src="@drawable/ic_bell"
-            android:tint="@color/slate_500"
+            android:tint="@color/text_tertiary"
             android:clickable="true"
             android:focusable="true" />
 
@@ -233,7 +245,7 @@
             android:layout_height="24dp"
             android:layout_weight="1"
             android:src="@drawable/ic_settings"
-            android:tint="@color/slate_500"
+            android:tint="@color/text_tertiary"
             android:clickable="true"
             android:focusable="true" />
     </LinearLayout>
