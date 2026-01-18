@@ -10,6 +10,7 @@ from firebase_admin import credentials, firestore, initialize_app
 parser = argparse.ArgumentParser()
 parser.add_argument("--video", type=str, default="demo.mp4", help="Path to demo video")
 parser.add_argument("--webcam", action="store_true", help="Use live webcam instead of video")
+parser.add_argument("--cam", type=int, default=0, help="Camera index (0,1,2...)")
 args = parser.parse_args()
 
 VIDEO_PATH = args.video
@@ -34,7 +35,10 @@ MIN_VISIBILITY = 0.5           # ignore landmarks if visibility below this
 LOCATION_NAME = "Waiting Room Cam 3"
 SEVERITY_SCORE = 0.93
 
-print("Source:", "WEBCAM" if USE_WEBCAM else f"VIDEO ({VIDEO_PATH})")
+if USE_WEBCAM:
+    print(f"Source: WEBCAM (index {args.cam})")
+else:
+    print(f"Source: VIDEO ({VIDEO_PATH})")
 
 # ================== FIREBASE SETUP ==================
 cred = credentials.Certificate(KEY_PATH)
@@ -120,9 +124,12 @@ def extract_keypoints(landmarks):
     return np.stack(pts, axis=0)
 
 # ================== MAIN LOOP ==================
-cap = cv2.VideoCapture(0 if USE_WEBCAM else VIDEO_PATH)
+cap = cv2.VideoCapture(args.cam if USE_WEBCAM else VIDEO_PATH)
 if not cap.isOpened():
-    print(f"ERROR: Could not open {'webcam' if USE_WEBCAM else 'video'}: {VIDEO_PATH if not USE_WEBCAM else 'index 0'}")
+    if USE_WEBCAM:
+        print(f"ERROR: Could not open webcam index {args.cam}")
+    else:
+        print(f"ERROR: Could not open video: {VIDEO_PATH}")
     raise SystemExit(1)
 
 triggered = False
@@ -205,8 +212,16 @@ while True:
 
     cv2.imshow("WatchCare AI - Fall Detection Demo", frame)
 
-    if cv2.waitKey(30) & 0xFF == ord("q"):
+    # Keys: q = quit, r = reset for another demo
+    key = cv2.waitKey(30) & 0xFF
+    if key == ord("q"):
         break
+    if key == ord("r"):
+        triggered = False
+        down_start_time = None
+        prev_pts = None
+        start_wall = time.time()
+        print("Reset done. Ready for next demo.")
 
 cap.release()
 cv2.destroyAllWindows()
