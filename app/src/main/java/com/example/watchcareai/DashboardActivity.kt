@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -33,8 +34,7 @@ class DashboardActivity : AppCompatActivity() {
     
     // Views
     private lateinit var tvNurseGreeting: TextView
-    private lateinit var btnThemeToggle: TextView
-    private lateinit var btnSettings: TextView
+    private lateinit var btnSettings: ImageView
     private lateinit var noAlertsView: LinearLayout
     private lateinit var activeAlertView: LinearLayout
     private lateinit var tvAlertCount: TextView
@@ -95,7 +95,6 @@ class DashboardActivity : AppCompatActivity() {
 
     private fun initializeViews() {
         tvNurseGreeting = findViewById(R.id.tvNurseGreeting)
-        btnThemeToggle = findViewById(R.id.btnThemeToggle)
         btnSettings = findViewById(R.id.btnSettings)
         noAlertsView = findViewById(R.id.noAlertsView)
         activeAlertView = findViewById(R.id.activeAlertView)
@@ -105,17 +104,10 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     private fun setupNurseName() {
-        val userName = auth.currentUser?.displayName 
-            ?: auth.currentUser?.email?.split("@")?.firstOrNull() 
-            ?: "Nurse"
-        tvNurseGreeting.text = "Hi, $userName"
+        tvNurseGreeting.text = "Hi, John Doe"
     }
 
     private fun setupButtons() {
-        btnThemeToggle.setOnClickListener {
-            Toast.makeText(this, "Theme toggle - Coming soon!", Toast.LENGTH_SHORT).show()
-        }
-
         btnSettings.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)

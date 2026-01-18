@@ -26,39 +26,23 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Hi, Nurse Name"
+            android:text="Hi, John Doe"
             android:textSize="20sp"
             android:textColor="@color/text_primary"
             android:fontFamily="sans-serif-bold" />
 
-        <!-- Theme Toggle Button -->
-        <TextView
-            android:id="@+id/btnThemeToggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="dark/light\ntoggle"
-            android:textSize="10sp"
-            android:textColor="@color/text_secondary"
-            android:gravity="center"
-            android:padding="8dp"
-            android:layout_marginEnd="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackground" />
-
         <!-- Settings Button -->
-        <TextView
+        <ImageView
             android:id="@+id/btnSettings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="settings"
-            android:textSize="10sp"
-            android:textColor="@color/text_secondary"
-            android:gravity="center"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_settings"
             android:padding="8dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground" />
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Settings"
+            app:tint="@color/text_secondary" />
     </LinearLayout>
 
     <!-- Main Content -->
